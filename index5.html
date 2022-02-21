@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function voltar() {
+            window.location.replace('index4.html')
+        }
+
+        function mostrar1() {
+            var x = document.getElementById("senhaMudar1");
+            var y = document.getElementById("pSenha1");
+            if (x.type === "password") {
+                x.type = "text";
+                y.innerHTML = "Esconder senha";
+            } else {
+                x.type = "password";
+                y.innerHTML = "Mostrar senha";
+            }
+        }
+
+        function mostrar2() {
+            var x = document.getElementById("senhaMudar2");
+            var y = document.getElementById("pSenha2");
+            if (x.type === "password") {
+                x.type = "text";
+                y.innerHTML = "Esconder senha";
+            } else {
+                x.type = "password";
+                y.innerHTML = "Mostrar senha";
+            }
+        }
+
+        function mudar() {
+            var x = document.getElementById('senhaMudar1').value;
+            var xp = document.getElementById('senhaMudar1');
+            var y = document.getElementById('senhaMudar2').value;
+            var yp = document.getElementById('senhaMudar2');
+            if(x !== null && x !== '' && x !== y && y !== null && y !== '') {
+                window.location.replace('index2.html');
+            } else if(x === y && x !== null & x !== '') {
+                document.getElementById('senhaMudar1').value = "";
+                document.getElementById('senhaMudar2').value = "";
+                xp.placeholder = "As senhas precisão ser diferentes";
+                yp.placeholder = "As senhas precisão ser diferentes";
+            } else if(x === null || x === '') {
+                document.getElementById('senhaMudar1').value = "";
+                xp.placeholder = "Você precisa digitar a senha antiga";
+            } else {
+                document.getElementById('senhaMudar2').value = "";
+                yp.placeholder = "Você precisa digitar a senha nova";
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div id="cabeçalho" class="cabeçalho">
+            <table style="width: calc(100% - 30px);margin-left: 15px; margin-right: 15px; padding-top: 10px;">
+                <tr>
+                    <td style="width: 50%;" onclick="voltar()"> Voltar </td>
+                    <td style="width: 50%; text-align: right;"></td>
+                </tr>
+            </table>
+        </div>
+    </header>
+    <br/><br/><br/>
+    <input type="password" class="senhaMudar" id="senhaMudar1" placeholder="Senha antiga"/><br/>
+    <div class="mostrar" onclick="mostrar1()">
+        <p id="pSenha1">Mostrar senha</p><br/>
+    </div>
+    <input type="password" class="senhaMudar" id="senhaMudar2" placeholder="Senha nova"/><br/>
+    <div class="mostrar" onclick="mostrar2()">
+        <p id="pSenha2">Mostrar senha</p><br/>
+    </div>    
+    <br/>
+    <button onclick="mudar()">Mudar senha</button>
+</body>
+</html>

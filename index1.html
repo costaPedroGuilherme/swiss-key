@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function mostrar() {
+            var x = document.getElementById("password");
+            var y = document.getElementById("pSenha");
+            if (x.type === "password") {
+                x.type = "text";
+                y.innerHTML = "Esconder senha";
+            } else {
+                x.type = "password";
+                y.innerHTML = "Mostrar senha";
+            }
+        }
+
+        function voltar() {
+            window.location.replace('index.html');
+        }
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <section>
+        <div class="voltar" onclick="voltar()">Voltar</div>
+        <div class="logo">
+            <img src="css/img/key.png" alt=""/>
+            <h1>SwissKey</h1>
+        </div>
+        <form>
+            <div class="labels">
+                <input type="email" id="email" placeholder="Email"/><br/><br/>
+                <input type="password" id="password" placeholder="Senha"/><br/>
+            </div>  
+        </form>
+        <div class="mostrar" onclick="mostrar()">
+            <p id="pSenha">Mostrar senha</p><br/>
+        </div>
+        <button id="quickstart-sign-in">Entrar</button>
+    </section>
+
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
+
+    <script id="MainScript">
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyA01MXTQ2NTJwe6spyk0NGnWyNI5kRPFxU",
+            authDomain: "swiss-key.firebaseapp.com",
+            databaseURL: "https://swiss-key.firebaseio.com",
+            projectId: "swiss-key",
+            storageBucket: "swiss-key.appspot.com",
+            messagingSenderId: "385688044879",
+            appId: "1:385688044879:web:b6067af8d7b1be9d0ff13a"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        document.getElementById('quickstart-sign-in').onclick =  function toggleSignIn() {
+            if (firebase.auth().currentUser) {
+                // [START signout]
+                firebase.auth().signOut();
+                // [END signout]
+            } else {
+                var email = document.getElementById('email').value;
+                var password = document.getElementById('password').value;
+                if (email.length < 4) {
+                    document.getElementById('password').value = "";
+                    document.getElementById('password').placeholder = "Email inválido";
+                    return;
+                }
+                if (password.length < 4) {
+                    document.getElementById('password').value = "";
+                    document.getElementById('password').placeholder = "Senha inválida";
+                    return;
+                }
+                // Sign in with email and pass.
+                // [START authwithemail]
+                firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+                    // Handle Errors here.
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    // [START_EXCLUDE]
+                    if (errorCode === 'auth/wrong-password') {
+                        document.getElementById('password').value = "";
+                        document.getElementById('password').placeholder = "Senha errada";
+                    } else {
+                        alert(errorMessage);
+                    }
+                    console.log(error);
+                    document.getElementById('quickstart-sign-in').disabled = false;
+                    // [END_EXCLUDE]
+                });
+                // [END authwithemail]
+            }
+            document.getElementById('quickstart-sign-in').disabled = true;
+            firebase.auth().onAuthStateChanged(user => {
+                if(user) {
+                    window.location = 'index2.html'; //After successful login, user will be redirected to home.html
+                }
+            });
+        }
+    </script>
+</body>
+</html>

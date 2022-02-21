@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function Cadastrar() {
+            window.location.replace('index0.html');
+        }
+
+        function entrar() {
+            window.location.replace('index1.html');
+        }
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <section>
+        <div class="logoinicial">
+            <div class="logo">
+                <img src="css/img/key.png" alt=""/>
+                <h1>SwissKey</h1>
+            </div>
+        </div>
+        <div class="opções">
+            <button onclick="Cadastrar()">Cadastrar</button><br/><br/>
+            <button onclick="entrar()">Entrar</button>
+        </div>
+    </section>
+
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
+
+    <script id="MainScript">
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyA01MXTQ2NTJwe6spyk0NGnWyNI5kRPFxU",
+            authDomain: "swiss-key.firebaseapp.com",
+            databaseURL: "https://swiss-key.firebaseio.com",
+            projectId: "swiss-key",
+            storageBucket: "swiss-key.appspot.com",
+            messagingSenderId: "385688044879",
+            appId: "1:385688044879:web:b6067af8d7b1be9d0ff13a"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        firebase.auth().onAuthStateChanged(user => {
+            if(user) {
+                window.location = 'index2.html'; //After successful login, user will be redirected to home.html
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        function gerarSenha() {
+            var x = document.getElementById("campo");
+            var length = document.getElementById("tamanho").value;
+            if (length > 0 && length <= 100) {
+                x.style.textAlign = "left";
+                if (length < 8){
+                    x.style.borderColor = "red";
+                } else if (length < 20) {
+                    x.style.borderColor = "yellow";
+                } else {
+                    x.style.borderColor = "green";
+                }
+                var result           = '';
+                var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*_-+=/*';
+                var charactersLength = characters.length;
+                for ( var i = 0; i < length; i++ ) {
+                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                x.innerHTML = result;
+            } else {
+                x.style.textAlign = "center";
+                x.innerHTML = "Valor inválido";
+            }
+        }
+
+        function copyToClipboard(element) {
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val($(element).text()).select();
+            document.execCommand("copy");
+            $temp.remove();
+        }
+
+        function voltar() {
+            window.location.replace('index2.html');
+        }
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="cabeçalho" class="cabeçalho">
+        <table style="width: calc(100% - 30px);margin-left: 15px; margin-right: 15px; padding-top: 10px;">
+            <tr>
+                <td style="width: 50%;" onclick="voltar()"> Voltar </td>
+                <td style="width: 50%; text-align: right;" id="salvarbutton"></td>
+            </tr>
+        </table>
+    </div>
+    <br/><br/><br/>
+    <input type="text" id="txtNomeSenha" placeholder="Nomeie sua senha"/>
+    <table id="telasenha">
+        <tr>
+            <td style="width: 50%;">
+                <input type="number" id="tamanho" placeholder="Tamanho" style="text-align: center;"/>
+            </td>
+            <td style="width: 50%; text-align: right;">
+                <p id="gerar" onclick="gerarSenha()">Gerar senha</p>
+            </td>
+        </tr>
+    </table><br/><br/><br/>
+    <h1 id="campo"></h1>
+    <p id="copiar" onclick="copyToClipboard('#campo')">Copiar senha</p>
+    <table id="telasenha" style="margin-top: 25px;">
+        <tr>
+            <td style="width: 50%; height: 35px; text-align: center; border: solid 1px white; border-radius: 10px;" id="tdAlterar" onclick="salvarF()">Salvar no Firebase</td>
+        </tr>
+    </table>
+    <table id="telasenha" style="margin-top: 25px;">
+        <tr>
+            <td style="width: 50%; height: 35px; text-align: center; border: solid 1px white; border-radius: 10px;" id="tdAlterar" onclick="salvar()">Salvar no SQLite</td>
+        </tr>
+    </table>
+
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
+
+    <script id="MainScript">
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyA01MXTQ2NTJwe6spyk0NGnWyNI5kRPFxU",
+            authDomain: "swiss-key.firebaseapp.com",
+            databaseURL: "https://swiss-key.firebaseio.com",
+            projectId: "swiss-key",
+            storageBucket: "swiss-key.appspot.com",
+            messagingSenderId: "385688044879",
+            appId: "1:385688044879:web:b6067af8d7b1be9d0ff13a"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig); 
+
+        var nomeV, senhaV;
+
+        function Ready(){
+            nomeV = document.getElementById("txtNomeSenha").value;
+            senhaV = document.getElementById("campo").innerHTML;
+        }
+
+        function salvarF() {
+            var x = document.getElementById("campo").innerText;
+            var xz = document.getElementById("txtNomeSenha").value; 
+            var z = document.getElementById("txtNomeSenha");
+            var y = document.getElementById("campo");
+            if(x !== null && x !== '' && x !== "Valor inválido" && x !== "Você precisa gerar uma senha antes de salvar" && xz !== "Você precisa nomear a senha" && xz !== '' && xz !== null) {
+                Ready();
+                firebase.database().ref('senha/'+nomeV).set({
+                    NomeSenha:nomeV,
+                    Senha: senhaV
+                }).then(function validar(){
+                    window.location = 'index2.html';
+                });
+                
+            } else if(x === null || x === '' || x === "Valor inválido" || x === "Você precisa gerar uma senha antes de salvar"){
+                y.style.textAlign = "center";
+                y.innerHTML = "Você precisa gerar uma senha antes de salvar";
+            } else {
+                z.placeholder = "Você precisa nomear a senha"
+            }
+        }
+
+        var db = openDatabase("DataBase", "1.0", "TestDataBase", 200000);
+        db.transaction(function(tx) {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS TestTable (id PRIMARY KEY, data)');
+        })
+
+        function salvar() {
+            var nome = document.getElementById('txtNomeSenha').value;
+            var senha = document.getElementById('campo').innerHTML;
+
+            db.transaction(function(tx){
+                tx.executeSql('INSERT INTO TestTable (id, data) VALUES(?, ?)', [nome, senha]);
+                window.location = 'index2.html';
+            })
+        }
+
+    </script>
+</body>
+</html>

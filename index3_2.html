@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        function gerarSenha() {
+            var x = document.getElementById("campo");
+            var length = document.getElementById("tamanho").value;
+            if (length > 0 && length <= 100) {
+                x.style.textAlign = "left";
+                if (length < 8){
+                    x.style.borderColor = "red";
+                } else if (length < 20) {
+                    x.style.borderColor = "yellow";
+                } else {
+                    x.style.borderColor = "green";
+                }
+                var result           = '';
+                var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*_-+=/*';
+                var charactersLength = characters.length;
+                for ( var i = 0; i < length; i++ ) {
+                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                x.innerHTML = result;
+            } else {
+                x.style.textAlign = "center";
+                x.innerHTML = "Valor inválido";
+            }
+        }
+
+        function copyToClipboard(element) {
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val($(element).text()).select();
+            document.execCommand("copy");
+            $temp.remove();
+        }
+
+        function voltar() {
+            window.location.replace('index2.html');
+        }
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="cabeçalho" class="cabeçalho">
+        <table style="width: calc(100% - 30px);margin-left: 15px; margin-right: 15px; padding-top: 10px;">
+            <tr>
+                <td style="width: 50%;" onclick="voltar()"> Voltar </td>
+                <td style="width: 50%; text-align: right;" id="salvarbutton"></td>
+            </tr>
+        </table>
+    </div>
+    <br/><br/><br/>
+    <input type="text" id="txtNome" style="text-align: center; margin-left: calc(50% - 130px);" placeholder="Digite a senha que deseja pesquisar"/>
+    <table id="telasenha">
+        <tr>
+            <td style="width: 50%; height: 35px; text-align: center; border: solid 1px white; border-radius: 10px;" id="tdPesquisar">Pesquisar senha</td>
+        </tr>
+    </table><br/><br/><br/>
+    <input type="text" id="campo"/>
+    <table id="telasenha" style="margin-top: 25px;">
+        <tr>
+            <td style="width: 50%; height: 35px; text-align: center; border: solid 1px white; border-radius: 10px;" id="tdAlterar">Alterar senha</td>
+        </tr>
+    </table>
+    <table id="telasenha" style="margin-top: 25px;">
+        <tr>
+            <td colspan="2" style="width: 100%; height: 35px; text-align: center; border: solid 1px white; border-radius: 10px;" id="tdExcluir">Excluir senha</td>
+        </tr>
+        <tr style="line-height: 50px;">
+            <td style="text-align: center; display: none;" id="tdSimExcluir">Sim</td>
+            <td style="text-align: center; display: none;" id="tdNãoExcluir">Não</td>
+        </tr>
+    </table>
+
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
+
+    <script id="MainScript">
+        var firebaseConfig = {
+            apiKey: "AIzaSyA01MXTQ2NTJwe6spyk0NGnWyNI5kRPFxU",
+            authDomain: "swiss-key.firebaseapp.com",
+            databaseURL: "https://swiss-key.firebaseio.com",
+            projectId: "swiss-key",
+            storageBucket: "swiss-key.appspot.com",
+            messagingSenderId: "385688044879",
+            appId: "1:385688044879:web:b6067af8d7b1be9d0ff13a"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        var nomeV, senhaV;
+
+        function Ready(){
+            nomeV = document.getElementById("txtNome").value;
+            senhaV = document.getElementById("campo").value;
+        }
+
+        var db = openDatabase("DataBase", "1.0", "TestDataBase", 200000);
+        db.transaction(function(tx) {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS TestTable (id PRIMARY KEY, data)');
+        })
+
+        document.getElementById('tdPesquisar').onclick = function() {
+                var nome = document.getElementById('txtNome').value;
+                var senha = document.getElementById('campo').value;
+
+                db.transaction(function(tx){
+                    tx.executeSql('SELECT * FROM TestTable WHERE id = ?', [nome], function(tx, result) {
+                        var rows = result.rows[0];
+                        document.getElementById("campo").value = rows.data;
+                    });
+                });
+        };
+
+        document.getElementById('tdAlterar').onclick = function() {
+                var nome = document.getElementById('txtNome').value;
+                var senha = document.getElementById('campo').value;
+
+                db.transaction(function(tx){
+                    tx.executeSql('UPDATE TestTable SET data = ? WHERE id = ?', [senha, nome]);
+                    document.getElementById("tdAlterar").innerHTML = "Senha alterada";
+                });
+        };
+
+        document.getElementById('tdExcluir').onclick = function() {
+            document.getElementById('tdNãoExcluir').style.removeProperty( 'display' );
+            document.getElementById('tdSimExcluir').style.removeProperty( 'display' );
+        }
+
+        document.getElementById('tdSimExcluir').onclick = function() {
+                var nome = document.getElementById('txtNome').value;
+                var senha = document.getElementById('campo').value;
+
+                db.transaction(function(tx){
+                    tx.executeSql('DELETE FROM TestTable WHERE id = ?', [nome]);
+                    document.getElementById("txtNome").value = "";
+                    document.getElementById("campo").value  = "";
+                    document.getElementById('tdNãoExcluir').style.display = "none";
+                    document.getElementById('tdSimExcluir').style.display = "none";
+                    document.getElementById('tdExcluir').innerHTML = "Senha excluída";
+                });
+        };
+
+        document.getElementById('tdNãoExcluir').onclick = function() {
+            document.getElementById('tdNãoExcluir').style.display = "none";
+            document.getElementById('tdSimExcluir').style.display = "none";
+        }
+    </script>
+</body>
+</html>

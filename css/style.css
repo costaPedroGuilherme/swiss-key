@@ -1,0 +1,157 @@
+body {
+    background-color: #2B2B2B;
+    color: white;
+    margin: 0px;
+}
+
+input {
+    height: 20px;
+    width: 260px;
+    background-color: transparent;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: white 2px solid;
+    outline: none;
+}
+
+input::-webkit-input-placeholder {
+    font-size: 10pt;
+}
+
+input, select, textarea {
+    color: white;
+    font-size: 10pt;
+}
+
+button {
+    margin-left: calc(50% - 80px);
+    width: 160px;
+    height: 50px;
+    border-radius: 25px;
+    color: #2B2B2B;
+    font-size: 10pt;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    outline: none;
+}
+
+.logo {
+    text-align: center;
+}
+
+.logo img{
+    height: 100px;
+    margin-top: calc(40% - 25px);
+}
+
+.logo h1 {
+    position: relative;
+    height: 125px;
+    width: 125px;
+    border-radius: 100px;
+    background-color: #E04C49;
+    line-height: 125px;
+    font-size: 20pt;
+    margin-left: calc(50% - 62px);
+    margin-top: -200px;
+}
+
+.voltar {
+    margin-top: 25px;
+    margin-left: 25px;
+    font-size: 10pt;
+}
+
+/* index0 */
+.opções {
+    margin-top: 40%;
+}
+
+/* index */
+
+.logoinicial {
+    margin-top: 41px;
+}
+
+.labels {
+    margin-top: 35%;
+    margin-left: calc(50% - 130px);
+    font-size: 15pt;
+}
+
+.mostrar p {
+    font-size: 10pt;
+    text-align: center;
+}
+
+/* index2 */
+
+.cabeçalho {
+    height: 50px;
+    width: 100%;
+    background-color: #E04C49;
+    font-size: 15pt;
+}
+
+.cabeçalho img {
+    height: 25px;
+}
+
+.senhasSalvas {
+    width: 300px;
+    margin-left: calc(50% - 150px);
+}
+
+.senhaLinha {
+    margin-top: 30px;
+}
+
+/* index3 */
+#campo {
+    font-size: 10pt;
+    width: 300px;
+    word-wrap: break-word;
+    margin-left: calc(50% - 150px);
+    border-bottom: solid 2px white;
+}
+
+#tamanho {
+    width: 85px;
+}
+
+#telasenha {
+    margin-top: 15%;
+    width: 300px;
+    margin-left: calc(50% - 150px);
+}
+
+#copiar {
+    text-align: center;
+    font-size: 10pt;
+}
+
+#txtNomeSenha {
+    text-align: center;
+    width: 300px !important;
+    margin-left: calc(50% - 150px);
+}
+
+/* index4 */
+
+.conteudoOpções {
+    width: 300px;
+    margin-left: calc(50% - 150px);;
+}
+
+.opção {
+    margin-top: 30px;
+}
+
+/* inde5 */
+.senhaMudar {
+    text-align: center;
+    margin-left: calc(50% - 130px);
+}

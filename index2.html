@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        function opções() {
+            window.location.replace('index4.html');
+        }
+
+        function nova() {
+            window.location.replace('index3.html');
+        }
+
+        function editar() {
+            window.location.replace('index3_1.html');
+        }
+
+        function editarS() {
+            window.location.replace('index3_2.html');
+        }
+
+        function copyToClipboard(element) {
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val($(element).text()).select();
+            document.execCommand("copy");
+            $temp.remove();
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div id="cabeçalho" class="cabeçalho">
+            <table style="width: calc(100% - 30px);margin-left: 15px; margin-right: 15px; padding-top: 10px;">
+                <tr>
+                    <td style="width: 50%;" onclick="opções()"> Opções </td>
+                    <td style="width: 50%; text-align: right;" onclick="nova()"> Nova senha </td>
+                </tr>
+            </table>
+        </div>
+    </header>
+    <section class="senhasSalvas" id="content">
+        <div class="senhaLinha">
+            <table style="width: 300px;  border-bottom: solid 1px #a9a9a9;">
+                <tr  onclick="editar()">
+                    <td style="width: 150px; font-weight: bold;">Senhas salvas no Firebase</td>
+                    <td style="width: 150px; text-align: right;">Editar</td>
+                </tr>
+            </table>
+            <br/><br/>
+            <table style="width: 300px;  border-bottom: solid 1px #a9a9a9;">
+                <tr onclick="editarS()">
+                    <td style="width: 150px; font-weight: bold;">Senhas salvas no SQLite</td>
+                    <td style="width: 150px; text-align: right;">Editar</td>
+                </tr>
+            </table>
+        </div>      
+    </section>
+    <br/><br/><br/>
+</body>
+</html>
