@@ -1,4 +1,4 @@
-![cover](.github/cover.png?style=flat)
+![cover](.github/banner.png?style=flat)
 
 ## 💻 Projeto
 Sistema CRUD para geração e cadastro de senhas com login.
